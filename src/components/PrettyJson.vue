@@ -2,6 +2,7 @@
     import { ref } from "vue";
     import JsonViewer from "vue-json-viewer";
     import { useDebounce } from "../helpers/useDebounce";
+    import { gtagEvent } from "../helpers/gtag";
 
     const uglyJson = ref("");
     const jsonData = ref("");
@@ -15,15 +16,18 @@
             const clean_json = JSON.parse(str);
             jsonData.value = clean_json;
             showJson.value = true;
-            console.log(navigator.clipboard);
             const json_text = JSON.stringify(clean_json, null, 4);
+
+            gtagEvent("json_format", {
+                event_category: "Format",
+                event_action: "json_format",
+                event_label: "Format Json data",
+            });
+
             e.preventDefault();
             uglyJson.value = "";
             errorMessage.value = "";
-            // navigator.clipboard.writeText(json_text).then(() => {
-            //     showSucessMessage("Formatted Json copied to clipboard!");
-            // });
-            
+
             var textArea = document.createElement("textarea");
             textArea.value = json_text;
             textArea.style.top = "0";
@@ -35,16 +39,14 @@
 
             try {
                 var successful = document.execCommand("copy");
-                var msg = successful ? "successful" : "unsuccessful";
-                if(successful){
+                if (successful) {
                     showSucessMessage("Formatted Json copied to clipboard!");
                 }
             } catch (err) {
-                console.error("Fallback: Oops, unable to copy", err);
+                console.error("Oops, unable to copy", err);
             }
 
             document.body.removeChild(textArea);
-
         } catch (error: any) {
             errorMessage.value = error.message;
             showJson.value = false;
