@@ -68,14 +68,15 @@
             <input autofocus type="text" @paste="pasteHandler" v-model="uglyJson" placeholder="Paste your unformatted json here..." class="w-full h-full focus:outline-0 p-4 font-mono text-sm text-[#002169] bg-blue-100 pr-[150px]" />
         </div>
         <div class="flex-1 overflow-hidden overflow-y-auto">
-            <json-viewer v-if="showJson" :expand-depth="7" :copyable="true" :value="jsonData"></json-viewer>
+            <json-viewer v-if="showJson" :expand-depth="7" :copyable="true" :value="jsonData" />
+            <!-- <vue-json-editor v-model="jsonData" mode="code" :modes="['code']" :show-btns="false" :exapndedOnStart="true"></vue-json-editor> -->
         </div>
     </div>
-    <div v-if="errorMessage" class="absolute left-0 right-0 font-medium text-center top-[50px] w-full p-4 border-red-500 border-dashed bg-red-100/60 text-red-600 border-b">
+    <div v-if="errorMessage" class="absolute left-0 right-0 font-medium text-center bottom-0 w-full p-4 border-red-500 border-dashed bg-red-100/60 text-red-600 border-t">
         {{ errorMessage }}
     </div>
 
-    <div v-if="successMessage" @click="successMessage = ''" class="absolute left-0 right-0 font-medium text-center top-[50px] w-full p-4 border-green-500 border-dashed bg-green-100/40 text-green-600 border-b">
+    <div v-if="successMessage" @click="successMessage = ''" class="absolute left-0 right-0 font-medium text-center bottom-0 w-full p-4 border-green-500 border-dashed bg-green-100/40 text-green-600 border-t">
         {{ successMessage }}
     </div>
 </template>
